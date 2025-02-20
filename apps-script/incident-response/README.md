@@ -18,7 +18,7 @@ After the response team resolves the incident, they use a slash command to
 automatically create a post-mortem in Google Docs.
 The app adds a user-provided description of the incident resolution, a transcript
 of the Chat conversation, and a summary of the conversation (automatically
-generated using [Vertex AI](https://cloud.google.com/vertex-ai)) to the post-mortem.
+generated using [Gemini AI](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/inference)) to the post-mortem.
 
 ## Tutorial
 
@@ -79,7 +79,7 @@ the following APIs:
    1. Google Chat API
    1. Google Docs API
    1. Admin SDK API
-   1. Vertex AI API
+   1. Gemini AI API
 1. Confirm that you're enabling the APIs in the correct project, then click **Next**.
 1. Confirm that you're enabling the correct APIs, then click **Enable**.
 1. Optionally, to enable the APIs manually:
@@ -87,6 +87,13 @@ the following APIs:
       [**Enabled APIs & Services**](https://console.cloud.google.com/apis/dashboard).
    1. Click **+ Enable APIs And Services**.
    1. Search for each required API, click it, then click **Enable**.
+
+### 4. Create API key
+
+To use Gemini API, you need to have an API key created:
+1. In the Google Cloud ocnsole, click **Menu** > **APIs & Services** > **Credentials**
+1. Click **CREATE CRENDETIALAS**, then select **API key**.
+1. Create the key
 
 ### 4. Set up authentication and authorization
 
@@ -102,6 +109,8 @@ replace placeholder information with real information.
 
 To learn more about authentication in Google Chat, see [Authenticate and authorize
 Chat apps and Google Chat API requests](https://developers.devsite.corp.google.com/chat/api/guides/auth).
+
+#### 4.1 Authenticate as a user configuration
 
 1. In the Google Cloud console, go to **Menu** > **APIs & Services** >
    [**OAuth consent screen**](https://console.cloud.google.com/apis/credentials/consent).
@@ -126,6 +135,68 @@ Chat apps and Google Chat API requests](https://developers.devsite.corp.google.c
 1. Click **Update**.
 1. Click **Save and Continue**.
 1. Review the app registration summary, then click **Back to Dashboard**.
+
+#### 4.2 Authenticate as a app configuration
+
+This is available in [Developer Preview](/workspace/preview) only.
+
+##### 4.2.1 setup service account and key
+
+1. In the Google Cloud console, go to **Menu*  > **IAM & Admin** > **Service Accounts**
+1. Click **Create service account**.
+1. Fill in the service account details, then click **Create and continue**.
+1. Click **Continue**
+1. Click **Done**. Make a note of the email address for the service account.
+1. Create private key:
+   1. In the Google Cloud console, go to **Menu** > **IAM & Admin** > **Service Accounts**.
+   [Go to Service Accounts]({{console_url}}iam-admin/serviceaccounts){:
+      class="button button-blue"
+      target="console"}
+   1. Select your service account.
+   1. Click **Keys** > **Add key** > **Create new key**.
+   1. Select **JSON**, then click **Create**.
+   1. Click **Close**.
+
+##### 4.2.2 Receive administrator approval
+
+To use an authorization scope that begins with
+`https://www.googleapis.com/auth/chat.app.*`, which are available as part of
+a Developer Preview, your Chat app must get a one-time
+[administrator approval](https://support.google.com/a?p=chat-app-auth).
+
+To use the `https://www.googleapis.com/auth/chat.bot` authorization scope,
+no administrator approval is required.
+
+To receive administrator approval, you must prepare your chat app's service account with the following
+information:
+
+* A Google Workspace Marketplace-compatible OAuth client
+* App configuration in the Google Workspace Marketplace SDK.
+
+1. In the Google Cloud console, go to **Menu**  > **IAM & Admin** > **Service Accounts**.
+1. Click the service account you created for your Chat app.
+1. Click **Advanced Setting**.
+1. Click **Create Google Workspace Marketplace-compatible OAuth client**.
+1. Click **Continue**.
+
+A confirmation message appears that says a Google Workspace Marketplace-compatible OAuth client has been created.
+After that, the Chap app should be configured in **Goolge Workspace Marketplace SDK**.
+
+1. In the Google Cloud console, enable the Google Workspace Marketplace SDK.
+1. In the Google Cloud console, go to go to **Menu** > **APIs & Services** > **Enabled APIs & services** > **Google Workspace Marketplace SDK** > **App Configuration**.
+1. Complete the App Configuration page. How you configure your Chat app depends on who your intended audience is and other factors. For help completing the app configuration page, see Configure your app in the Google Workspace Marketplace SDK. For the purposes of this guide, enter the following information:
+  1. Under **App visibility**, select **Private**
+  1. Under **Installation settings**, select **Individual + admin install**.
+  1. Under **App integrations**, select **Chat app**. 
+  1. Under **OAuth scopes**, enter all the scopes with ``https://www.googleapis.com/auth/chat.app.*``
+  1. Under **Developer information**, enter your **Developer name**, **Developer website URL**, and **Developer email**.
+  1. Click **Save draft**
+  1. [Set up authorization Chat app](https://support.google.com/a?p=chat-app-auth).
+
+**Warning**: This example uses an exported service account key for simplicity's sake. Exporting a private key is not recommended 
+in production because it shouldn't be stored in an insecure location, such as source control. To learn more about secure service account 
+implementations and best practices, see Choose when to use service accounts.
+
 
 ### 5. Create an Apps Script project and connect it to the Google Cloud project
 
@@ -164,6 +235,14 @@ To enable the Admin SDK Directory service:
 1. In **Identifier**, select **AdminDirectory**.
 1. Click **Add**.
 
+To enable [Oauth2 for Apps Script library](https://github.com/googleworkspace/apps-script-oauth2):
+
+1. At the left, click **Editor** code.
+1. At the left, next to **Libraries**, click **Add a library +**.
+1. Enter the script ID `1B7FSrk5Zi6L1rSxxTDgDEUsPzlukDsi4KGuTMorsTQHhGBzBkMun4iDF`.
+1. Click **Look up**, then click **Add**.
+
+
 Now that you've created and configured a Google Cloud project and Apps Script project,
 you're ready to copy the code into your project and run the sample.
 
@@ -175,6 +254,8 @@ you're ready to copy the code into your project and run the sample.
 1. In the file `Consts.js`, replace the value of the `PROJECT_ID` with the ID
    (not the number) of your GCP Project, which you can copy from the
    [Google Cloud Console](https://console.cloud.google.com/).
+1. In the file `Consts.js`, replace `APP_CREDENTIALS` with the content of the `credentials.json` that you created earlier.
+1. In the file `Consts.js`, replace `GEMINI_API_KEY` with the API key you created earlier.
 1. Click **Deploy** > **New deployment**.
 1. Click the icon besides **Select type** and select both **Wep app** and **Add-on**.
 1. Name your deployment and click **Deploy**.
@@ -211,3 +292,7 @@ The Chat app is ready to respond to messages.
 ### 8. Open the web page
 
 Navigate to the **Web app URL** from the Apps Script deployment to test your app.
+
+#### 8.1 app auth mode
+If the checkbox is selected, the Chat app will use app authentication to create the space, add members and post the message to the space.
+If the checkbox is not selected, the Chat app will use human credentials instead and all the actions will be done on behalf of the user.

@@ -1,5 +1,5 @@
 /**
- * Copyright 2023 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,11 +23,11 @@
  *                          title, description, and users.
  * @return {string} the resource name of the new space.
  */
-function createChatSpace(formData) {
+function handleIncidentWithHumanCredentials(formData) {
   const users = formData.users.trim().length > 0 ? formData.users.split(',') : [];
-  const spaceName = setUpSpace_(formData.title, users);
-  addAppToSpace_(spaceName);
-  createMessage_(spaceName, formData.description);
+  const spaceName = setUpSpaceWithHumanCredentials(formData.title, users);
+  addAppToSpaceWithHumanCredentials(spaceName);
+  createMessageWithHumanCredentials(spaceName, formData.description);
   return spaceName;
 }
 
@@ -36,7 +36,7 @@ function createChatSpace(formData) {
  *
  * @return {string} the resource name of the new space.
  */
-function setUpSpace_(displayName, users) {
+function setUpSpaceWithHumanCredentials(displayName, users) {
   const memberships = users.map(email => ({
     member: {
       name: `users/${email}`,
@@ -61,7 +61,7 @@ function setUpSpace_(displayName, users) {
  *
  * @return {string} the resource name of the new membership.
  */
-function addAppToSpace_(spaceName) {
+function addAppToSpaceWithHumanCredentials(spaceName) {
   const request = {
     member: {
       name: "users/app",
@@ -78,7 +78,7 @@ function addAppToSpace_(spaceName) {
  *
  * @return {string} the resource name of the new message.
  */
-function createMessage_(spaceName, text) {
+function createMessageWithHumanCredentials(spaceName, text) {
   const request = {
     text: text
   };
