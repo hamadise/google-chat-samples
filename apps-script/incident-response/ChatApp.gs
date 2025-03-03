@@ -185,5 +185,4 @@ function getUserDisplayName_(userMap, userName) {
   userMap.set(userName, displayName);
   return displayName;
 }
-
 // [END chat_incident_response_app]

@@ -15,11 +15,9 @@
  */
 // [START chat_incident_response_consts]
 
-const PROJECT_ID = PROJECT_ID';
+const PROJECT_ID = 'replace-with-your-project-id';
 const CLOSE_INCIDENT_COMMAND_ID = 3;
-const APP_CREDENTIALS = APP_CREDENTIALS;
+const APP_CREDENTIALS = 'replace-with-your-app-credentials';
 const APP_CREDENTIALS_SCOPES = 'https://www.googleapis.com/auth/chat.bot https://www.googleapis.com/auth/chat.app.memberships https://www.googleapis.com/auth/chat.app.spaces.create';
-const GEMINI_API_KEY = GEMINI_API_KEY;
-
-
+const GEMINI_API_KEY = 'replace-with-your-gemini-api-key';
 // [END chat_incident_response_consts]

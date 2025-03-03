@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 /**
- * Creates a space in Google Chat with the provided title and members, and posts an
- * initial message to it.
+ * Handles an incident by creating a chat space, adding members, and posting a message.
+ * Uses either application credentials or human credentials based on the formData.
  *
- * @param {Object} formData the data submitted by the user. It should contain the fields
- *                          title, description, and users.
- * @return {string} the resource name of the new space.
+ * @param {Object} formData - The data submitted by the user. It should contain the fields:
+ *                           - title: The display name of the chat space.
+ *                           - description: The description of the incident.
+ *                           - users: A comma-separated string of user emails to be added to the space.
+ *                           - isAppCredentials: Boolean indicating whether to use application credentials.
+ * @return {string} The resource name of the new space.
  */
 function handleIncident(formData) {
   console.log(formData)
-  const appCredentialsMode = formData.appCredentials; // Get the appCredentials element
-  if(appCredentialsMode){
+  const isAppCredentials = formData.isAppCredentials; // Get the isAppCredentials element
+  if(isAppCredentials){
     return handleIncidentWithAppCredentials(formData)
   } else{
     return handleIncidentWithHumanCredentials(formData)

@@ -8,6 +8,11 @@
           "userSymbol": "Chat",
           "serviceId": "chat",
           "version": "v1"
+        },
+        {
+          "userSymbol": "AdminDirectory",
+          "version": "directory_v1",
+          "serviceId": "admin"
         }
       ],
       "libraries": [

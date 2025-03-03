@@ -16,7 +16,7 @@
 // [START chat_incident_response_gemini]
 
 /**
- * Summarizes a Chat conversation using the Vertex AI text prediction API.
+ * Summarizes a Chat conversation using the Gemini API text prediction API.
  *
  * @param {string} chatHistory The Chat history that will be summarized.
  * @return {string} The content from the text prediction response.
@@ -62,5 +62,4 @@ function summarizeChatHistory_(chatHistory) {
     return 'Gemini API error, please check logs.'
   }
 }
-
 // [END chat_incident_response_gemini]

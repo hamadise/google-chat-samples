@@ -36,5 +36,4 @@ function createDoc_(title, resolution, chatHistory, chatSummary) {
   body.appendParagraph(chatHistory);
   return doc.getUrl();
 }
-
 // [END chat_incident_response_docs]

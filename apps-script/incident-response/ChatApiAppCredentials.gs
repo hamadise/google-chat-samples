@@ -13,32 +13,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+// [START handle_incident_with_application_credentials]
 
+/**
+ * Handles an incident by creating a chat space, adding members, and posting a message.
+ * All the actions are done using application credentials.
+ *
+ * @param {Object} formData - The data submitted by the user. It should contain the fields:
+ *                           - title: The display name of the chat space.
+ *                           - description: The description of the incident.
+ *                           - users: A comma-separated string of user emails to be added to the space.
+ * @return {string} The resource name of the new space.
+ */
 function handleIncidentWithAppCredentials(formData) {
   const users = formData.users.trim().length > 0 ? formData.users.split(',') : [];
-  const spaceName = createChatSpaceWithAppCredentials(formData.title);
-  createHumanMembershipWithAppCredentials(spaceName, getUserEmail());
+  const service = _getService();
+  if (!service.hasAccess()) {
+      console.error(service.getLastError());
+      return;
+   }
+  const spaceName = _createChatSpaceWithAppCredentials(formData.title, service);
+  _createHumanMembershipWithAppCredentials(spaceName, getUserEmail(),service);
   for (const user of users ){
-    createHumanMembershipWithAppCredentials(spaceName, user);
+    _createHumanMembershipWithAppCredentials(spaceName, user, service);
   }
-  createMessageWithAppCredentials(spaceName, formData.description);
+  _createMessageWithAppCredentials(spaceName, formData.description, service);
   return spaceName;
 }
 
-
-
-function createChatSpaceWithAppCredentials(spaceName) {
+/**
+ * Creates a chat space with application credentials.
+ *
+ * @param {string} displayName - The name of the chat space.
+ * @param {object} service - The credentials of the service account.
+ * @returns {string} The resource name of the new space.
+ */
+function _createChatSpaceWithAppCredentials(displayName, service) {
   try {
-    const service = getService_();
-    if (!service.hasAccess()) {
-      console.error(service.getLastError());
-      return;
-    }
     // for private apps, the alias can be used
     const my_customer_alias = "customers/my_customer"
     // Specify the space to create.
     const space = {
-        displayName: spaceName,
+        displayName: displayName,
         spaceType: 'SPACE',                
         customer: my_customer_alias
     };
@@ -56,8 +72,15 @@ function createChatSpaceWithAppCredentials(spaceName) {
     console.log('Failed to create space with error %s', err.message);
   }
 }
-
-function createMessageWithAppCredentials(spaceName, message) {
+ /*
+ * Creates a chat message with application credentials.
+ *
+ * @param {string} spaceName - The resource name of the space.
+ * @param {string} message - The text to be posted.
+ * @param {object} service - The credentials of the service account.
+ * @return {string} the resource name of the new space.
+ */
+function _createMessageWithAppCredentials(spaceName, message, service) {
   try {
     const service = getService_();
     if (!service.hasAccess()) {
@@ -80,8 +103,14 @@ function createMessageWithAppCredentials(spaceName, message) {
     console.log('Failed to create message with error %s', err.message);
   }
 }
-
-function createHumanMembershipWithAppCredentials(spaceName, email){
+/**
+ * Creates a human membership in a chat space with application credentials.
+ *
+ * @param {string} spaceName - The resource name of the space.
+ * @param {string} email - The email of the user to be added.
+ * @param {object} service - The credentials of the service account.
+ */
+function _createHumanMembershipWithAppCredentials(spaceName, email, service){
   try{
     const service = getService_();
       if (!service.hasAccess()) {
@@ -90,7 +119,6 @@ function createHumanMembershipWithAppCredentials(spaceName, email){
       }
     const membership = {
       member: {
-        // TODO(developer): Replace USER_NAME here
         name: 'users/'+email,
         // User type for the membership
         type: 'HUMAN'
@@ -109,8 +137,11 @@ function createHumanMembershipWithAppCredentials(spaceName, email){
 
 }
 
-
-function getService_() {
+ /*
+ * Creates a service for the service account.
+ * @return {object}  - The credentials of the service account.
+ */
+function _getService() {
   return OAuth2.createService(APP_CREDENTIALS.client_email)
       .setTokenUrl('https://oauth2.googleapis.com/token')
       .setPrivateKey(APP_CREDENTIALS.private_key)
@@ -119,3 +150,4 @@ function getService_() {
       .setScope(APP_CREDENTIALS_SCOPES)
       .setPropertyStore(PropertiesService.getScriptProperties());
 }
+// [END handle_incident_with_application_credentials]

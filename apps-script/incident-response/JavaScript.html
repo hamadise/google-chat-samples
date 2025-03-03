@@ -15,52 +15,52 @@ limitations under the License.
 -->
 <!-- [START chat_incident_response_javascript] -->
 <script>
-    var formDiv = document.getElementById('form');
-    var outputDiv = document.getElementById('output');
-    var clearDiv = document.getElementById('clear');
-  
-    function handleFormSubmit(formObject) {
-      event.preventDefault();
-      outputDiv.innerHTML = 'Please wait while we create the space...';
-      hide(formDiv);
-      show(outputDiv);
-      google.script.run
-        .withSuccessHandler(updateOutput)
-        .withFailureHandler(onFailure)
-        .handleIncident(formObject);
-    }
-  
-    function updateOutput(response) {
-      var spaceId = response.replace('spaces/', '');
-      outputDiv.innerHTML =
-        '<p>Space created!</p><p><a href="https://mail.google.com/chat/#chat/space/'
-          + spaceId
-          + '" target="_blank">Open space</a></p>';
-      show(outputDiv);
-      show(clearDiv);
-    }
-  
-    function onFailure(error) {
-      outputDiv.innerHTML = 'ERROR: ' + error.message;
-      outputDiv.classList.add('error');
-      show(outputDiv);
-      show(clearDiv);
-    }
-  
-    function onReset() {
-      outputDiv.innerHTML = '';
-      outputDiv.classList.remove('error');
-      show(formDiv);
-      hide(outputDiv);
-      hide(clearDiv);
-    }
-  
-    function hide(element) {
-      element.classList.add('hidden');
-    }
-  
-    function show(element) {
-      element.classList.remove('hidden');
-    }
-  </script>
-  <!-- [END chat_incident_response_javascript] -->
+  var formDiv = document.getElementById('form');
+  var outputDiv = document.getElementById('output');
+  var clearDiv = document.getElementById('clear');
+
+  function handleFormSubmit(formObject) {
+    event.preventDefault();
+    outputDiv.innerHTML = 'Please wait while we create the space...';
+    hide(formDiv);
+    show(outputDiv);
+    google.script.run
+      .withSuccessHandler(updateOutput)
+      .withFailureHandler(onFailure)
+      .handleIncident(formObject);
+  }
+
+  function updateOutput(response) {
+    var spaceId = response.replace('spaces/', '');
+    outputDiv.innerHTML =
+      '<p>Space created!</p><p><a href="https://mail.google.com/chat/#chat/space/'
+        + spaceId
+        + '" target="_blank">Open space</a></p>';
+    show(outputDiv);
+    show(clearDiv);
+  }
+
+  function onFailure(error) {
+    outputDiv.innerHTML = 'ERROR: ' + error.message;
+    outputDiv.classList.add('error');
+    show(outputDiv);
+    show(clearDiv);
+  }
+
+  function onReset() {
+    outputDiv.innerHTML = '';
+    outputDiv.classList.remove('error');
+    show(formDiv);
+    hide(outputDiv);
+    hide(clearDiv);
+  }
+
+  function hide(element) {
+    element.classList.add('hidden');
+  }
+
+  function show(element) {
+    element.classList.remove('hidden');
+  }
+</script>
+<!-- [END chat_incident_response_javascript] -->

@@ -91,7 +91,7 @@ the following APIs:
 ### 4. Create API key
 
 To use Gemini API, you need to have an API key created:
-1. In the Google Cloud ocnsole, click **Menu** > **APIs & Services** > **Credentials**
+1. In the Google Cloud console, click **Menu** > **APIs & Services** > **Credentials**
 1. Click **CREATE CRENDETIALAS**, then select **API key**.
 1. Create the key
 
@@ -110,7 +110,7 @@ replace placeholder information with real information.
 To learn more about authentication in Google Chat, see [Authenticate and authorize
 Chat apps and Google Chat API requests](https://developers.devsite.corp.google.com/chat/api/guides/auth).
 
-#### 4.1 Authenticate as a user configuration
+#### 4.1 Set up authentication as a user 
 
 1. In the Google Cloud console, go to **Menu** > **APIs & Services** >
    [**OAuth consent screen**](https://console.cloud.google.com/apis/credentials/consent).
@@ -136,11 +136,11 @@ Chat apps and Google Chat API requests](https://developers.devsite.corp.google.c
 1. Click **Save and Continue**.
 1. Review the app registration summary, then click **Back to Dashboard**.
 
-#### 4.2 Authenticate as a app configuration
+#### 4.2 Set up authentication as an app
 
 This is available in [Developer Preview](/workspace/preview) only.
 
-##### 4.2.1 setup service account and key
+##### 4.2.1 Setup service account and key
 
 1. In the Google Cloud console, go to **Menu*  > **IAM & Admin** > **Service Accounts**
 1. Click **Create service account**.
@@ -156,6 +156,10 @@ This is available in [Developer Preview](/workspace/preview) only.
    1. Click **Keys** > **Add key** > **Create new key**.
    1. Select **JSON**, then click **Create**.
    1. Click **Close**.
+
+**Warning**: This example uses an exported service account key for simplicity's sake. Exporting a private key is not recommended 
+in production because it shouldn't be stored in an insecure location, such as source control. To learn more about secure service account 
+implementations and best practices, see Choose when to use service accounts.
 
 ##### 4.2.2 Receive administrator approval
 
@@ -192,12 +196,6 @@ After that, the Chap app should be configured in **Goolge Workspace Marketplace 
   1. Under **Developer information**, enter your **Developer name**, **Developer website URL**, and **Developer email**.
   1. Click **Save draft**
   1. [Set up authorization Chat app](https://support.google.com/a?p=chat-app-auth).
-
-**Warning**: This example uses an exported service account key for simplicity's sake. Exporting a private key is not recommended 
-in production because it shouldn't be stored in an insecure location, such as source control. To learn more about secure service account 
-implementations and best practices, see Choose when to use service accounts.
-
-
 ### 5. Create an Apps Script project and connect it to the Google Cloud project
 
 Before creating the Apps Script project, copy your Google Cloud project number.
@@ -293,6 +291,7 @@ The Chat app is ready to respond to messages.
 
 Navigate to the **Web app URL** from the Apps Script deployment to test your app.
 
-#### 8.1 app auth mode
-If the checkbox is selected, the Chat app will use app authentication to create the space, add members and post the message to the space.
-If the checkbox is not selected, the Chat app will use human credentials instead and all the actions will be done on behalf of the user.
+#### 8.1. Select the authentication mode
+
+If the checkbox 'Use app credentials' is selected, the Chat app will use app authentication to create the space, add members and post the message to the space.
+If the checkbox is not selected, the Chat app will use user credentials instead and all the actions will be done on behalf of the user.
