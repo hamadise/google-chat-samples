@@ -49,7 +49,9 @@ function summarizeChatHistory_(chatHistory) {
 
     if (responseCode === 200) {
       var json = JSON.parse(responseBody);
-      if (json.candidates && json.candidates.length > 0 && json.candidates[0].content && json.candidates[0].content.parts && json.candidates[0].content.parts.length > 0) {
+      if (json.candidates && json.candidates.length > 0 &&
+          json.candidates[0].content && json.candidates[0].content.parts &&
+          json.candidates[0].content.parts.length > 0) {
         return json.candidates[0].content.parts[0].text;
       } else {
         return "Gemini API: Unexpected response structure.";

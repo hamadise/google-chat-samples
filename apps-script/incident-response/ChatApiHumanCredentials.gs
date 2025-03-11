@@ -27,9 +27,9 @@
  */
 function handleIncidentWithHumanCredentials(formData) {
   const users = formData.users.trim().length > 0 ? formData.users.split(',') : [];
-  const spaceName = _setUpSpaceWithHumanCredentials(formData.title, users);
-  _addAppToSpaceWithHumanCredentials(spaceName);
-  _createMessageWithHumanCredentials(spaceName, formData.description);
+  const spaceName = setUpSpaceWithHumanCredentials_(formData.title, users);
+  addAppToSpaceWithHumanCredentials_(spaceName);
+  createMessageWithHumanCredentials_(spaceName, formData.description);
   return spaceName;
 }
 
@@ -38,7 +38,7 @@ function handleIncidentWithHumanCredentials(formData) {
  *
  * @return {string} the resource name of the new space.
  */
-function _setUpSpaceWithHumanCredentials(displayName, users) {
+function setUpSpaceWithHumanCredentials_(displayName, users) {
   const memberships = users.map(email => ({
     member: {
       name: `users/${email}`,
@@ -63,7 +63,7 @@ function _setUpSpaceWithHumanCredentials(displayName, users) {
  *
  * @return {string} the resource name of the new membership.
  */
-function _addAppToSpaceWithHumanCredentials(spaceName) {
+function addAppToSpaceWithHumanCredentials_(spaceName) {
   const request = {
     member: {
       name: "users/app",
@@ -80,7 +80,7 @@ function _addAppToSpaceWithHumanCredentials(spaceName) {
  *
  * @return {string} the resource name of the new message.
  */
-function _createMessageWithHumanCredentials(spaceName, text) {
+function createMessageWithHumanCredentials_(spaceName, text) {
   const request = {
     text: text
   };

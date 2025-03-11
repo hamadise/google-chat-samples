@@ -25,7 +25,6 @@
  * @return {string} The resource name of the new space.
  */
 function handleIncident(formData) {
-  console.log(formData)
   const isAppCredentials = formData.isAppCredentials; // Get the isAppCredentials element
   if(isAppCredentials){
     return handleIncidentWithAppCredentials(formData)

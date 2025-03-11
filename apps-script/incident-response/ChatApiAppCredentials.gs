@@ -27,30 +27,29 @@
  */
 function handleIncidentWithAppCredentials(formData) {
   const users = formData.users.trim().length > 0 ? formData.users.split(',') : [];
-  const service = _getService();
+  const service = getService_();
   if (!service.hasAccess()) {
       console.error(service.getLastError());
       return;
    }
-  const spaceName = _createChatSpaceWithAppCredentials(formData.title, service);
-  _createHumanMembershipWithAppCredentials(spaceName, getUserEmail(),service);
+  const spaceName = createChatSpaceWithAppCredentials_(formData.title, service);
+  createHumanMembershipWithAppCredentials_(spaceName, getUserEmail(),service);
   for (const user of users ){
-    _createHumanMembershipWithAppCredentials(spaceName, user, service);
+    createHumanMembershipWithAppCredentials_(spaceName, user, service);
   }
-  _createMessageWithAppCredentials(spaceName, formData.description, service);
+  createMessageWithAppCredentials_(spaceName, formData.description, service);
   return spaceName;
 }
-
 /**
  * Creates a chat space with application credentials.
  *
  * @param {string} displayName - The name of the chat space.
  * @param {object} service - The credentials of the service account.
  * @returns {string} The resource name of the new space.
- */
-function _createChatSpaceWithAppCredentials(displayName, service) {
+*/
+function createChatSpaceWithAppCredentials_(displayName, service) {
   try {
-    // for private apps, the alias can be used
+    // For private apps, the alias can be used
     const my_customer_alias = "customers/my_customer"
     // Specify the space to create.
     const space = {
@@ -64,15 +63,13 @@ function _createChatSpaceWithAppCredentials(displayName, service) {
         {},
         // Authenticate with the service account token.
         {'Authorization': 'Bearer ' + service.getAccessToken()});
-    // Log details about the created message.
-    console.log(createdSpace);
     return createdSpace.name;
   } catch (err) {
     // TODO (developer) - Handle exception.
     console.log('Failed to create space with error %s', err.message);
   }
 }
- /*
+/*
  * Creates a chat message with application credentials.
  *
  * @param {string} spaceName - The resource name of the space.
@@ -80,7 +77,7 @@ function _createChatSpaceWithAppCredentials(displayName, service) {
  * @param {object} service - The credentials of the service account.
  * @return {string} the resource name of the new space.
  */
-function _createMessageWithAppCredentials(spaceName, message, service) {
+function createMessageWithAppCredentials_(spaceName, message, service) {
   try {
     const service = getService_();
     if (!service.hasAccess()) {
@@ -96,8 +93,6 @@ function _createMessageWithAppCredentials(spaceName, message, service) {
         // Authenticate with the service account token.
         {'Authorization': 'Bearer ' + service.getAccessToken()});
 
-    // Log details about the created message.
-    console.log(result);
   } catch (err) {
     // TODO (developer) - Handle exception.
     console.log('Failed to create message with error %s', err.message);
@@ -110,7 +105,7 @@ function _createMessageWithAppCredentials(spaceName, message, service) {
  * @param {string} email - The email of the user to be added.
  * @param {object} service - The credentials of the service account.
  */
-function _createHumanMembershipWithAppCredentials(spaceName, email, service){
+function createHumanMembershipWithAppCredentials_(spaceName, email, service){
   try{
     const service = getService_();
       if (!service.hasAccess()) {
@@ -130,7 +125,6 @@ function _createHumanMembershipWithAppCredentials(spaceName, email, service){
       {},
       {'Authorization': 'Bearer ' + service.getAccessToken()}
     );
-    console.log(result)
   } catch (err){
     console.log('Failed to create membership with error %s', err.message)
   }
@@ -141,7 +135,7 @@ function _createHumanMembershipWithAppCredentials(spaceName, email, service){
  * Creates a service for the service account.
  * @return {object}  - The credentials of the service account.
  */
-function _getService() {
+function getService_() {
   return OAuth2.createService(APP_CREDENTIALS.client_email)
       .setTokenUrl('https://oauth2.googleapis.com/token')
       .setPrivateKey(APP_CREDENTIALS.private_key)

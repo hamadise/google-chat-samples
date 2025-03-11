@@ -138,64 +138,9 @@ Chat apps and Google Chat API requests](https://developers.devsite.corp.google.c
 
 #### 4.2 Set up authentication as an app
 
-This is available in [Developer Preview](/workspace/preview) only.
+This is available in [Developer Preview](/workspace/preview) only. 
+[The Google Chat app authentication]((https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)) documentation provides details on how to set up authentication as an app.
 
-##### 4.2.1 Setup service account and key
-
-1. In the Google Cloud console, go to **Menu*  > **IAM & Admin** > **Service Accounts**
-1. Click **Create service account**.
-1. Fill in the service account details, then click **Create and continue**.
-1. Click **Continue**
-1. Click **Done**. Make a note of the email address for the service account.
-1. Create private key:
-   1. In the Google Cloud console, go to **Menu** > **IAM & Admin** > **Service Accounts**.
-   [Go to Service Accounts]({{console_url}}iam-admin/serviceaccounts){:
-      class="button button-blue"
-      target="console"}
-   1. Select your service account.
-   1. Click **Keys** > **Add key** > **Create new key**.
-   1. Select **JSON**, then click **Create**.
-   1. Click **Close**.
-
-**Warning**: This example uses an exported service account key for simplicity's sake. Exporting a private key is not recommended 
-in production because it shouldn't be stored in an insecure location, such as source control. To learn more about secure service account 
-implementations and best practices, see Choose when to use service accounts.
-
-##### 4.2.2 Receive administrator approval
-
-To use an authorization scope that begins with
-`https://www.googleapis.com/auth/chat.app.*`, which are available as part of
-a Developer Preview, your Chat app must get a one-time
-[administrator approval](https://support.google.com/a?p=chat-app-auth).
-
-To use the `https://www.googleapis.com/auth/chat.bot` authorization scope,
-no administrator approval is required.
-
-To receive administrator approval, you must prepare your chat app's service account with the following
-information:
-
-* A Google Workspace Marketplace-compatible OAuth client
-* App configuration in the Google Workspace Marketplace SDK.
-
-1. In the Google Cloud console, go to **Menu**  > **IAM & Admin** > **Service Accounts**.
-1. Click the service account you created for your Chat app.
-1. Click **Advanced Setting**.
-1. Click **Create Google Workspace Marketplace-compatible OAuth client**.
-1. Click **Continue**.
-
-A confirmation message appears that says a Google Workspace Marketplace-compatible OAuth client has been created.
-After that, the Chap app should be configured in **Goolge Workspace Marketplace SDK**.
-
-1. In the Google Cloud console, enable the Google Workspace Marketplace SDK.
-1. In the Google Cloud console, go to go to **Menu** > **APIs & Services** > **Enabled APIs & services** > **Google Workspace Marketplace SDK** > **App Configuration**.
-1. Complete the App Configuration page. How you configure your Chat app depends on who your intended audience is and other factors. For help completing the app configuration page, see Configure your app in the Google Workspace Marketplace SDK. For the purposes of this guide, enter the following information:
-  1. Under **App visibility**, select **Private**
-  1. Under **Installation settings**, select **Individual + admin install**.
-  1. Under **App integrations**, select **Chat app**. 
-  1. Under **OAuth scopes**, enter all the scopes with ``https://www.googleapis.com/auth/chat.app.*``
-  1. Under **Developer information**, enter your **Developer name**, **Developer website URL**, and **Developer email**.
-  1. Click **Save draft**
-  1. [Set up authorization Chat app](https://support.google.com/a?p=chat-app-auth).
 ### 5. Create an Apps Script project and connect it to the Google Cloud project
 
 Before creating the Apps Script project, copy your Google Cloud project number.
